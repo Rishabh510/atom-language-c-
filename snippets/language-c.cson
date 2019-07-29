@@ -16,7 +16,7 @@
     'body': 'int main(int argc, char const *argv[]) {\n\t${1:/* code */}\n\treturn 0;\n}'
   'For Loop':
     'prefix': 'for'
-    'body': 'for (size_t ${1:i} = 0; ${1:i} < ${2:count}; ${1:i}${3:++}) {\n\t${4:/* code */}\n}'
+    'body': 'for (${4:size_t} ${1:i} = 0; ${1:i} < ${2:count}; ${1:i}${3:++}) {\n\t${5:/* code */}\n}'
   'Header Include-Guard':
     'prefix': 'once'
     'body': '#ifndef ${1:SYMBOL}\n#define $1\n\n${2}\n\n#endif /* end of include guard: $1 */\n'
@@ -49,10 +49,10 @@
     'body': 'if (${1:/* condition */}) {\n\t${2:/* code */}\n} else if (${3:/* condition */}) {\n\t${4:/* code */}\n} else {\n\t${5:/* code */}\n}'
   'Switch Statement':
     'prefix': 'switch'
-    'body': 'switch (${1:/* expression */}) {\n\tcase ${2:/* value */}:\n}'
+    'body': 'switch (${1:/* expression */}) {\n\tcase ${2:/* value */} : {${3:/* operation */}}\n}'
   'case':
-    'prefix': 'cs'
-    'body': 'case ${1:/* value */}:$0'
+    'prefix': 'case'
+    'body': 'case ${1:/* value */} : {${2:/* operation */}}\n}'
   'printf':
     'prefix': 'printf'
     'body': 'printf("${1:%s}\\\\n", $2);$3'
@@ -67,7 +67,7 @@
     'body': 'void ${1:name}(${2:/* arguments */}) {\n\t${3:/* code */}\n}'
   'any function':
     'prefix': 'func'
-    'body': '${1:int} ${2:name}(${3:/* arguments */}) {\n\t${5:/* code */}\n\treturn ${4:0};\n}'
+    'body': '${1:int} ${2:name}(${3:/* arguments */}) {\n\t${4:/* code */}\n\treturn ${5:0};\n}'
   'write file':
     'prefix': 'wf'
     'body': 'FILE *${1:fp};\n${1:fp} = fopen ("${2:filename.txt}","w");\nif (${1:fp}!=NULL)\n{\n\tfprintf(${1:fp},"${3:Some String\\\\n}");\n\tfclose (${1:fp});\n}'
@@ -81,33 +81,33 @@
   'Class':
     'prefix': 'cl'
     'body': 'class ${1:name_t} {\nprivate:\n\t${0:/* data */}\n\npublic:\n\t${1:name_t} (${2:arguments});\n\tvirtual ~${1:name_t} ();\n};'
-  'Namespace':
-    'prefix': 'ns'
-    'body': 'namespace ${1:name} {\n\t$2\n} /* $1 */'
+  # 'Namespace':
+  #   'prefix': 'ns'
+  #   'body': 'namespace ${1:name} {\n\t$2\n} /* $1 */'
   'cout':
     'prefix': 'cout'
-    'body': 'std::cout << \"${1:/* message */}\" << \'\\\\n\';'
+    'body': 'cout << \"${1:/* message */}\" << \'\\\\n\';$2'
   'cin':
     'prefix': 'cin'
-    'body': 'std::cin >> ${1:/* variable */};'
+    'body': 'cin >> ${1:/* variable */};$2'
   'cerr':
     'prefix': 'cerr'
-    'body': 'std::cerr << \"${1:/* error message */}\" << \'\\\\n\';'
+    'body': 'cerr << \"${1:/* error message */}\" << \'\\\\n\';'
   'std::map':
     'prefix': 'map'
-    'body': 'std::map<${1:key}, ${2:value}> map$3;'
+    'body': 'map<${1:key}, ${2:value}> ${3:map_name};$4'
   'std::string':
     'prefix': 'str'
-    'body': 'std::string'
+    'body': 'string ${1:s} = "${2:/* string */}";$3'
   'std::vector':
     'prefix': 'vector'
-    'body': 'std::vector<${1:int}> v$2;'
+    'body': 'vector<${1:int}> ${2:v};$3'
   'template <typename>':
     'prefix': 'tp'
     'body': 'template <typename ${1:T}>'
   'output file':
     'prefix': 'outf'
-    'body': 'std::ofstream ${1:afile}("${2:filename.txt}", std::ios::out);\nif (${1:afile}.is_open()) {\n\t${1:afile} << "${3:This is a line.}\\\\n";\n\t${1:afile}.close();\n}'
+    'body': 'ofstream ${1:afile}("${2:filename.txt}", ios::out);\nif (${1:afile}.is_open()) {\n\t${1:afile} << "${3:This is a line.}\\\\n";\n\t${1:afile}.close();\n}'
   'input file':
     'prefix': 'inf'
-    'body': 'std::ifstream ${1:afile}("${2:filename.txt}", std::ios::in);\nif (${1:afile}.is_open()) {\n\tstd::string line;\n\twhile (std::getline(${1:afile}, line)) {\n\t\tstd::cout << line << \'\\\\n\';\n\t}\n\t${1:afile}.close();\n}\nelse {\n\tstd::cerr << "Unable to open file\\\\n";\n}'
+    'body': 'ifstream ${1:afile}("${2:filename.txt}", ios::in);\nif (${1:afile}.is_open()) {\n\tstring line;\n\twhile (getline(${1:afile}, line)) {\n\t\tcout << line << \'\\\\n\';\n\t}\n\t${1:afile}.close();\n}\nelse {\n\tcerr << "Unable to open file\\\\n";\n}'
